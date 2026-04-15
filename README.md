@@ -4,13 +4,13 @@ Voici le jeu vidéo codé par l'équipe **QbitSoft**!
 
 ---
 
-## Principe du jeu
+## 🥬​​ Principe du jeu
 
 Dans le jeu *Dodge!*, tu incarnes un petit **fenouil** qui désire plus que tout grandir en un beau légume. Pour cela, tu dois l'aider a ingérer des **nutriments**. Mais attention! Les viles **mouchent** bombinent autour, attendant le moment opportun pour planter leurs œufs dans le petit fenouil. Esquive-les de ton mieux!
 
 ---
 
-## Gameplay
+## 👾 Gameplay
 
 Déplace le petit fenouil dans l'espace. Quand un **nutriment** apparaît, fonce pour l'ingérer en le touchant!
 
@@ -24,8 +24,8 @@ Quand une **mouche** apparaît, esquive-la tout de suite! Après tout, toucher l
 
 ---
 
-## Contrôles
+## 🎮 Contrôles
 
-- Commencer une partie : 'Entrée ⤶'
-- Déplacer le petit fenouil : 'Flèches ← ↑ ↓ →'
+- Commencer une partie : `Flèche du haut ↑`
+- Déplacer le petit fenouil : `Flèches ← ↑ ↓ →`s
 - ***AJOUTER TOUTES LES COMMANDES A LA FIN***
