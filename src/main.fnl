@@ -2,6 +2,8 @@
 ;; author: QBitStudio
 ;; desc:   A dodge game designed by QBitSoft.
 ;; script: fennel
+;; Acun code ici présent n'a été généré par un LLM.
+;; #NoAi
 
 (global state 0) ;; 0: start, 1: playing, 2: game over.
 (global best-score 0)
@@ -10,6 +12,13 @@
 (global player-sprite 1)
 (global axis-x 0)
 (global axis-y 0)
+
+(global is-initializing-game false)
+
+(global chad-mult 1)
+
+;; Flies
+(global flies []) ;; {fly-pos-x, fly-pos-y, fly-vector-x, fly-vector-y, fly-respawn-delay}
 
 (global must-play-sfx false)
 
@@ -55,15 +64,15 @@
   (print "Dodge!" 100 (+ 50 decalage-y) couleur-texte)
   (print "Press space to start" 80 (+ 80 decalage-y) couleur-texte false 1 true)
 
-  (print "By QbitSoft" 195 128 couleur-texte true 1 true)
+  (print "By QbitSoft" 197 128 couleur-texte true 1 true)
 
   (spr 1 7 35 0 8)
   (spr 33 165 35 0 8))
 
 (fn change-state [sfx-id sfx-note new-state]
   (sfx sfx-id sfx-note -1)
-  (set state new-state))
-
+  (set state new-state)
+  (set is-initializing-game true))
 
 (fn manage-start-menu [] ;; State 0. Start menu.
   (render-start-menu)
@@ -95,6 +104,48 @@
   (spr player-sprite player-x player-y 0)
   (set axis-x 0)
   (set axis-y 0))
+
+(fn trace-flies []
+  (each [key value (ipairs flies)]
+    (trace "{")
+    (trace (.. "pos-x: " (. value :fly-pos-x)))
+    (trace (.. "pos-y: " (. value :fly-pos-y)))
+    (trace (.. "vector-x: " (. value :fly-vector-x)))
+    (trace (.. "vector-y: " (. value :fly-vector-y)))
+    (trace (.. "respawn-delay: " (. value :fly-respawn-delay)))
+    (trace "}")))
+
+(fn new-fly [pos-x pos-y dir-start-x dir-start-y dir-end-x dir-end-y delay velocity]
+  ;; ->AB=((xb-xa)*->i)+((yb-ya)*->i)
+  (local vector-x (- dir-end-x dir-start-x))
+  (local vector-y (- dir-end-y dir-start-y))
+  (set velo (* velocity chad-mult))
+  (table.insert flies {:fly-pos-x pos-x :fly-pos-y pos-y :fly-vector-x (* velo vector-x) :fly-vector-y (* velo vector-y) :fly-respawn-delay delay}))
+
+(fn move-flies []
+  ; (trace "Tdmsldvs")
+  (each [key value (pairs flies)]
+    (trace "Test")
+    (tset value :fly-pos-x (+ (. value :fly-vector-x) (. value :fly-pos-x)))
+    (tset value :fly-pos-y (+ (. value :fly-vector-y) (. value :fly-pos-y)))
+    (trace (.. "Fly moved: {" (. value :fly-pos-x)))))
+
+(fn render-flies []
+  (each [key value (pairs flies)]
+    (spr 16 (. value :fly-pos-x) (. value :fly-pos-y))))
+
+(fn manage-flies []
+  (if (= true is-initializing-game)
+    (for [i 0 5 1]
+      (trace "Generate fly.")
+      (local start-x (math.random 240 480))
+      (local start-y (math.random 136 272))
+      (new-fly start-x start-y start-x start-y (math.random 0 240) (math.random 0 136) (* 120 (- 1 (- chad-mult 1))) (* chad-mult 10))
+      (trace i)))
+  (set is-initializing-game false)
+  (trace-flies)
+  (move-flies)
+  (render-flies))
 
 (fn render-game []
   (cls background-color-game)
@@ -170,6 +221,37 @@
   
   (manage-player-movements))
 
+(fn change-state [sfx-id sfx-note new-state]
+  (sfx sfx-id sfx-note -1)
+  (set state new-state))
+
+(fn render-game-over []
+  (cls background-color-menu)
+
+  (var decalage-y (* (math.sin t) 2))
+  
+  ;; Start menu title and sub.
+  (for [i 0 29]
+    (for [j 0 29]
+      (spr 7 (* i 8) (* j 8) 0)))
+
+  (print (.. "Score: " score) 2 2 couleur-texte true 1 true)
+
+  (print (.. "Best Score: " best-score) 2 22 couleur-texte true 1 true)
+
+  (print "Press space to restart" 80 (+ 80 decalage-y) couleur-texte false 1 true)
+  
+  (spr 4 100 100 0 8))
+
+(fn manage-game-over []
+  (if (> score best-score)
+    (set best-score score))
+  render-game-over)
+
+  (if (= true (key 48))
+    (set state 0)
+  )
+
 ;; Boucle principale exécutée à 60 FPS
 (fn _G.TIC []
   ;;(trace (.. "State " state)) ;; Debug
@@ -180,6 +262,9 @@
   
   (if (= state 1)
     (manage-main-game))
+  
+  (if (= state 2)
+    (manage-game-over))
   
   ;; 4. Fait avancer le temps
   (set t (+ t 0.1)))
