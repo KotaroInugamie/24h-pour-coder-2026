@@ -3,28 +3,41 @@
 ;; desc:   A dodge game designed by QBitSoft.
 ;; script: fennel
 
+(global state 0) ;; 0: start, 1: menu, 2: playing, 3: game over.
+
+
 (var couleur-texte 0)  ; 6 = vert. Essaie 11 (bleu clair)
 (var couleur-fond 12)  ; 12 = Blanc. Essaie 0 (Noir)
 
 ;; Variable pour l'animation
 (var t 0)
-(var decalage-y 0)
 
-;; extraction du game de base en une fonction
-(fn game []
-  ;; 1. Nettoie l'écran
+(fn switch-state [btn next-state]
+  (if (= true btn)
+    (set state next-state)))
+
+(fn render-start-menu []
   (cls couleur-fond)
-  
-  ;; 2. Calcule un petit mouvement de vague
+
   (var decalage-y (* (math.sin t) 5))
   
-  ;; 3. Affiche le texte au centre avec l'effet de vague
-  (print "Dodge !" 45 (+ 50 decalage-y) couleur-texte)
-  (print "By QBitSoft !" 200 130 couleur-texte true 1 true)
-  
-  ;; 4. Fait avancer le temps
-  (set t (+ t 0.1)))
+  ;; Start menu title and sub.
+  (print "Dodge!" 45 (+ 50 decalage-y) couleur-texte)
+  (print "press any button to continue" 45 (+ 60 decalage-y) couleur-texte false 1 true)
+
+  (print "By QBitSoft!" 200 130 couleur-texte true 1 true))
+
+(fn manage-start-menu [] ;; State 0. Start menu.
+  (render-start-menu)
+
+  (switch-state (btn 0) 1))
 
 ;; Boucle principale exécutée à 60 FPS
 (fn _G.TIC []
-  (game))
+  (trace (.. "State " state)) ;; Debug
+  
+  (if (= state 0)
+    (manage-start-menu))
+  
+  ;; 4. Fait avancer le temps
+  (set t (+ t 0.1)))
