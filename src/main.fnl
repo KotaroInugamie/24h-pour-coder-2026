@@ -3,8 +3,10 @@
 ;; desc:   A dodge game designed by QBitSoft.
 ;; script: fennel
 
-(global state 0) ;; 0: start, 2: playing, 3: game over.
+(global state 0) ;; 0: start, 1: playing, 2: game over.
 (global best-score 0)
+(global player-x 120)
+(global player-y 68)
 
 (global score 0)
 
@@ -39,7 +41,10 @@
 
 (fn render-game []
   (cls background-color-game)
-  (print (.. "Score: " score) 2 2 couleur-texte true 1 true))
+  (map)
+  (print (.. "Score: " score) 2 2 couleur-texte true 1 true)
+  (spr 1 player-x player-y)
+  )
 
 (fn manage-main-game []
   (render-game))
