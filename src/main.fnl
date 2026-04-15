@@ -57,17 +57,14 @@
   )
 )
 
-(fn render-game []
-  (cls background-color-game)
-  (map)
-  (print (.. "Score: " score) 2 2 couleur-texte true 1 true)
+(fn manage-player-movements []
   (if (= true (btn 0))
     (set axis-y (- axis-y 1)))
-   (if (= true (btn 1))
+  (if (= true (btn 1))
     (set axis-y (+ axis-y 1)))
-    (if (= true (btn 2))
+  (if (= true (btn 2))
     (set axis-x (- axis-x 1)))
-    (if (= true (btn 3))
+  (if (= true (btn 3))
     (set axis-x (+ axis-x 1)))
   (set player-y (+ player-y axis-y))
   (set player-x (+ player-x axis-x))
@@ -76,8 +73,13 @@
     (set player-sprite 1))
   (spr player-sprite player-x player-y)
   (set axis-x 0)
-  (set axis-y 0)
-  )
+  (set axis-y 0))
+
+(fn render-game []
+  (cls background-color-game)
+  (map)
+  (print (.. "Score: " score) 2 2 couleur-texte true 1 true)
+  (manage-player-movements))
 
 (fn manage-main-game []
   (render-game))
