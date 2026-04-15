@@ -209,6 +209,7 @@
 
 (fn manage-main-game []
   (render-game)
+  (manage-flies)
 
   (if (= nutr-affiche 0)
     (if (> nutr-delai 0)
