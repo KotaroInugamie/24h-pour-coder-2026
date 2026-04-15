@@ -8,9 +8,10 @@
 
 ;; Variable pour l'animation
 (var t 0)
+(var decalage-y 0)
 
-;; Boucle principale exécutée à 60 FPS
-(fn _G.TIC []
+;; extraction du game de base en une fonction
+(fn game []
   ;; 1. Nettoie l'écran
   (cls couleur-fond)
   
@@ -23,3 +24,7 @@
   
   ;; 4. Fait avancer le temps
   (set t (+ t 0.1)))
+
+;; Boucle principale exécutée à 60 FPS
+(fn _G.TIC []
+  (game))
