@@ -1,6 +1,6 @@
-;; title:  Template de base
-;; author: Quentin
-;; desc:   Template de base pour le 24h pour coder 2026
+;; title:  Dodge
+;; author: QBitStudio
+;; desc:   A dodge game designed by QBitSoft.
 ;; script: fennel
 
 (var couleur-texte 0)  ; 6 = vert. Essaie 11 (bleu clair)
@@ -18,7 +18,8 @@
   (var decalage-y (* (math.sin t) 5))
   
   ;; 3. Affiche le texte au centre avec l'effet de vague
-  (print "WORKFLOW OPERATIONNEL !" 45 (+ 64 decalage-y) couleur-texte)
+  (print "Dodge !" 45 (+ 50 decalage-y) couleur-texte)
+  (print "By QBitSoft !" 200 130 couleur-texte true 1 true)
   
   ;; 4. Fait avancer le temps
   (set t (+ t 0.1)))
