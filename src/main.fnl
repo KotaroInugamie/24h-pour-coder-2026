@@ -3,8 +3,8 @@
 ;; desc:   A dodge game designed by QBitSoft.
 ;; script: fennel
 
-(global state 0) ;; 0: start, 1: menu, 2: playing, 3: game over.
-
+(global state 0) ;; 0: start, 2: playing, 3: game over.
+(global best-score 0)
 
 (var couleur-texte 0)  ; 6 = vert. Essaie 11 (bleu clair)
 (var couleur-fond 12)  ; 12 = Blanc. Essaie 0 (Noir)
@@ -22,6 +22,8 @@
   (var decalage-y (* (math.sin t) 5))
   
   ;; Start menu title and sub.
+  (print (.. "Best Score: " 0) 2 2 couleur-texte true 1 true)
+
   (print "Dodge!" 45 (+ 50 decalage-y) couleur-texte)
   (print "press any button to continue" 45 (+ 60 decalage-y) couleur-texte false 1 true)
 
