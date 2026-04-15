@@ -140,7 +140,7 @@
       (trace "Generate fly.")
       (local start-x (math.random 240 480))
       (local start-y (math.random 136 272))
-      (new-fly start-x start-y start-x start-y (math.random 0 240) (math.random 0 136) (* 120 (- 1 (- chad-mult 1))) (* chad-mult 10))
+      (new-fly start-x start-y start-x start-y (math.random 240) (math.random 136) (* 120 (- 1 (- chad-mult 1))) (* chad-mult 10))
       (trace i)))
   (set is-initializing-game false)
   (trace-flies)
