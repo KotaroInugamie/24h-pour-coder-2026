@@ -7,8 +7,8 @@
 
 (global state 0) ;; 0: start, 1: playing, 2: game over.
 (global best-score 0)
-(global player-x 120)
-(global player-y 68)
+(global player-x (- 120 4))
+(global player-y (- 68 4))
 (global player-sprite 1)
 (global axis-x 0)
 (global axis-y 0)
@@ -137,14 +137,18 @@
     (for [j 0 29]
       (spr 7 (* i 8) (* j 8) 0)))
 
-  (print (.. "Best Score: " best-score) 2 2 couleur-texte true 1 true)
+  (print (.. "Best Score:\n" best-score) 4 4 couleur-texte true 1 true)
 
-  (print "Dodge!" 100 (+ 50 decalage-y) couleur-texte)
-  (print "Press space to start" 80 (+ 80 decalage-y) couleur-texte false 1 true)
+  (print "Dodge!" 105 (+ 50 decalage-y) couleur-texte)
+  (print "Press space to start" 85 (+ 80 decalage-y) couleur-texte false 1 true)
 
-  (print "By QbitSoft" 197 128 couleur-texte true 1 true)
+  (print "By QbitSoft" 190 125 couleur-texte true 1 true)
 
-  (spr 1 7 35 0 8)
+  (spr 5 (- 15 32) (- 35 32) 0 8)
+  (spr 6 (+ 15 32) (- 35 32) 0 8)
+  (spr 21 (- 15 32) (+ 35 32) 0 8)
+  (spr 22 (+ 15 32) (+ 35 32) 0 8)
+  (spr 1 15 35 0 8)
   (spr 33 165 35 0 8))
 
 (fn change-state [sfx-id sfx-note new-state]
@@ -176,7 +180,6 @@
   (and (and (< ax (+ bx bw)) (> (+ ax aw) bx)) (and (< ay (+ by bh)) (> (+ ay ah) by))))
 
 (fn manage-player-movements []
-  ;(trace correct)
   (if (= true (btn 0))
     (set axis-y (- axis-y 1)))
   (if (= true (btn 1))
@@ -185,6 +188,7 @@
     (set axis-x (- axis-x 1)))
   (if (= true (btn 3))
     (set axis-x (+ axis-x 1)))
+  
   (detecte-oob (+ player-x axis-x) player-y GAME_MIN_X GAME_MAX_X GAME_MIN_Y GAME_MAX_Y)
   (if (= true correct)
     (set axis-x 0))
@@ -197,11 +201,13 @@
   (if (or (not= axis-y 0) (not= axis-x 0))
     (set player-sprite (+ 2 (% t 2)))
     (set player-sprite 1))
+
   (spr 5 (- player-x 4) (- player-y 4) 0)
   (spr 6 (+ player-x 4) (- player-y 4) 0)
   (spr 21 (- player-x 4) (+ player-y 4) 0)
   (spr 22 (+ player-x 4) (+ player-y 4) 0)
   (spr player-sprite player-x player-y 0)
+
   (set axis-x 0)
   (set axis-y 0))
 
@@ -374,7 +380,8 @@
     (for [j 0 16]
       (spr 7 (* i 8) (* j 8))))
       
-  (print (.. "Score: " score) 2 2 couleur-texte true 1 true))
+  (print (.. "Score:\n" score) 4 4 couleur-texte true 1 true)
+  (print (.. "Best Score:\n" best-score) 4 20 couleur-texte true 1 true))
 
 (fn change-state [sfx-id sfx-note new-state]
   (sfx sfx-id sfx-note -1)
@@ -394,11 +401,11 @@
     (for [j 0 29]
       (spr 7 (* i 8) (* j 8) 0)))
 
-  (print (.. "Score: " score) 2 2 couleur-texte true 1 true)
+  (print (.. "Score:\n" score) 4 4 couleur-texte true 1 true)
 
-  (print (.. "Best Score: " best-score) 2 22 couleur-texte true 1 true)
+  (print (.. "Best Score:\n" best-score) 4 20 couleur-texte true 1 true)
 
-  (print "Press space to restart" 80 (+ 80 decalage-y) couleur-texte false 1 true)
+  (print "Press space to restart" 80 (+ 100 decalage-y) couleur-texte false 1 true)
   
   (spr 4 85 10 0 8))
 
