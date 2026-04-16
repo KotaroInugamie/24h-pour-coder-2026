@@ -51,8 +51,7 @@
 (fn play-music [musi]
   (music musi)
   (set music-start-time t)
-  (set music-state musi)
-  (trace music-state))
+  (set music-state musi))
 
 (fn reset-music-game []
   (music -1)
@@ -147,10 +146,11 @@
 (fn move-flies []
   ; (trace "Tdmsldvs")
   (each [key value (pairs flies)]
-    (trace "Test")
+    ;;(trace "Test")
     (tset value :fly-pos-x (+ (. value :fly-vector-x) (. value :fly-pos-x)))
     (tset value :fly-pos-y (+ (. value :fly-vector-y) (. value :fly-pos-y)))
-    (trace (.. "Fly moved: {" (. value :fly-pos-x)))))
+    ;;(trace (.. "Fly moved: {" (. value :fly-pos-x)))
+    ))
 
 (fn render-flies []
   (each [key value (pairs flies)]
@@ -159,7 +159,7 @@
 (fn manage-flies []
   (if (= true is-initializing-game)
     (for [i 0 5 1]
-      (trace "Generate fly.")
+      ;;(trace "Generate fly.")
 
       (var mult-x -1)
       (if (= (math.random 1 2) 1)
@@ -167,15 +167,14 @@
       (local start-x (* (math.random 240 480) mult-x))
 
       (local start-y (math.random 0 136))
-      (new-fly start-x start-y start-x start-y (math.random 0 240) (math.random 0 136) (* 120 (- 1 (- chad-mult 1))) (* chad-mult 0.002))
-      (trace i)))
+      (new-fly start-x start-y start-x start-y (math.random 0 240) (math.random 0 136) (* 120 (- 1 (- chad-mult 1))) (* chad-mult 0.002))))
   (set is-initializing-game false)
-  (trace-flies)
+  ;;(trace-flies)
   (move-flies)
   (render-flies))
 
 (fn render-game []
-  (trace (- t game-start-time))
+  ;;(trace (- t game-start-time))
   (if (= game-start-time 0)
     (start-game-music-logic))
   (if (and (not= 2 music-state) (>= (- t game-start-time) (* 3 4)))
