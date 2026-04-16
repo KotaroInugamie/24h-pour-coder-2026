@@ -45,6 +45,10 @@
 (var background-color-menu 0)  ; 12 = Blanc. Essaie 0 (Noir)
 (var background-color-game 6)
 
+(fn _G.BOOT []
+  (pmem 0 0))
+
+(set best-score (pmem 0))
 (global map-sol [])
 (for [i 1 17]
   (local map-x []) ;; new table each time
@@ -87,7 +91,7 @@
     (for [j 0 29]
       (spr 7 (* i 8) (* j 8) 0)))
 
-  (print (.. "Best Score: " 0) 2 2 couleur-texte true 1 true)
+  (print (.. "Best Score: " best-score) 2 2 couleur-texte true 1 true)
 
   (print "Dodge!" 100 (+ 50 decalage-y) couleur-texte)
   (print "Press space to start" 80 (+ 80 decalage-y) couleur-texte false 1 true)
@@ -337,7 +341,7 @@
   (if (> score best-score)
     (set best-score score))
   (render-game-over)
-
+  (pmem 0 best-score)
   (if (= true (key 48))
     (set state 0)
   ))
