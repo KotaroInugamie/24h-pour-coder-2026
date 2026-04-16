@@ -26,12 +26,17 @@ Quand une **mouche** apparaît, esquive-la tout de suite ! Après tout, toucher 
 
 ## 🎮​ Contrôles
 
-- Commencer une partie : `Entrée ⤶`
+- Commencer une partie : `Espace 𓋰`
 - Déplacer le petit fenouil : `Flèches ← ↑ ↓ →`
-- ***AJOUTER TOUTES LES COMMANDES A LA FIN***
 
 ---
 
 ## 📷​ Images
 
-![Brainstorming avant le debut du code](./images/notes.jpg "Brainstorming avant le debut du code")
+![Du brainstorming avant le debut du code](./images/notes.jpg "Du brainstorming avant le debut du code")
+
+![L'écran titre](./images/intro.png "L'écran titre")
+
+![Un peu de gameplay](./images/main_game.png "Un peu de gameplay")
+
+![Aïe ! Game Over !](./images/game_over.png "Aïe ! Game Over !")

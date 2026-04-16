@@ -1,7 +1,7 @@
-;; title:    Dodge!
-;; author:   QbitStudio
-;; desc:     An arcade type video game designed by QBitSoft
-;; script:   Fennel
+;; title: Dodge!
+;; author: QbitStudio
+;; desc: A video game designed by QbitSoft
+;; script: fennel
 
 (global state 0) ; 0: start, 1: playing, 2: game over.
 (global best-score 0)
@@ -57,7 +57,7 @@
     (tset map-x j (math.random 100)))
   (tset map-sol i map-x))
 
- Variable pour l'animation
+ ; Variable pour l'animation
 (var t 0)
 
 (fn restart-game []
@@ -159,9 +159,7 @@
 
   ; QUAND bouton flèche haut préssée Jouer un son et passe en mode jeu si on est dans le start menu
   (if (= true (keyp 48))
-    (change-state 0 c5 1)
-  )
-)
+    (change-state 0 c5 1)))
 
 (fn detecte-oob [x y min-x max-x min-y max-y]
   (set correct false)
@@ -259,9 +257,7 @@
       (remove-fly j))
 
     (if (detect-collision player-x player-y 8 8 (. value :fly-pos-x) (. value :fly-pos-y) 8 8)
-      (change-state 3 c3 2)))
-    
-    )
+      (change-state 3 c3 2))))
 
 (fn render-ombre-mouche [x y]
   (spr 192 (- x 4) (- y 4) 0)
