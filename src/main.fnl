@@ -57,8 +57,7 @@
 (fn play-music [musi]
   (music musi)
   (set music-start-time t)
-  (set music-state musi)
-  (trace music-state))
+  (set music-state musi))
 
 (fn reset-music-game []
   (music -1)
@@ -196,7 +195,7 @@
   (render-flies))
 
 (fn render-game []
-  (trace (- t game-start-time))
+  ;;(trace (- t game-start-time))
   (if (= game-start-time 0)
     (start-game-music-logic))
   (if (and (not= 2 music-state) (>= (- t game-start-time) (* 3 4)))
