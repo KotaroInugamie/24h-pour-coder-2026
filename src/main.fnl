@@ -132,15 +132,20 @@
 
 (fn render-flies []
   (each [key value (pairs flies)]
-    (spr 16 (. value :fly-pos-x) (. value :fly-pos-y))))
+    (spr 16 (. value :fly-pos-x) (. value :fly-pos-y) 0)))
 
 (fn manage-flies []
   (if (= true is-initializing-game)
     (for [i 0 5 1]
       (trace "Generate fly.")
-      (local start-x (math.random 240 480))
-      (local start-y (math.random 136 272))
-      (new-fly start-x start-y start-x start-y (math.random 0 240) (math.random 0 136) (* 120 (- 1 (- chad-mult 1))) (* chad-mult 10))
+
+      (var mult-x -1)
+      (if (= (math.random 1 2) 1)
+        (set mult-x 1))
+      (local start-x (* (math.random 240 480) mult-x))
+
+      (local start-y (math.random 0 136))
+      (new-fly start-x start-y start-x start-y (math.random 0 240) (math.random 0 136) (* 120 (- 1 (- chad-mult 1))) (* chad-mult 0.002))
       (trace i)))
   (set is-initializing-game false)
   (trace-flies)
@@ -219,7 +224,8 @@
   (if (= true (detect-collision player-x player-y 8 8 nutr-x nutr-y 8 8))
     (manage-ingere-nutriment))
   
-  (manage-player-movements))
+  (manage-player-movements)
+  (manage-flies))
 
 (fn change-state [sfx-id sfx-note new-state]
   (sfx sfx-id sfx-note -1)
