@@ -405,6 +405,7 @@
 
 (fn render-game-over []
   (cls background-color-menu)
+  (set music-main 2)
   (if (or (= music-state 2) (= music-state 0))
     (reset-music-game))
   (if (not= 3 music-state)
