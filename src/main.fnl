@@ -12,6 +12,9 @@
 (global player-sprite 1)
 (global axis-x 0)
 (global axis-y 0)
+(global music-state -1)
+(global music-start-time 0)
+(global game-start-time 0)
 
 (global is-initializing-game false)
 
@@ -45,11 +48,30 @@
 ;; Variable pour l'animation
 (var t 0)
 
+(fn play-music [musi]
+  (music musi)
+  (set music-start-time t)
+  (set music-state musi)
+  (trace music-state))
+
+(fn reset-music-game []
+  (music -1)
+  (set music-start-time 0)
+  (set music-state -1)
+  (set game-start-time t))
+
+(fn start-game-music-logic []
+  (set game-start-time t)
+  (music -1)
+  (set music-state -1))
+
 (fn switch-state [btn next-state]
   (if (= true btn)
     (set state next-state)))
 
 (fn render-start-menu []
+  (if (not= music-state 1)
+    (play-music 1))
   (cls background-color-menu)
 
   (var decalage-y (* (math.sin t) 2))
@@ -148,6 +170,13 @@
   (render-flies))
 
 (fn render-game []
+  (trace (- t game-start-time))
+  (if (= game-start-time 0)
+    (start-game-music-logic))
+  (if (and (not= 2 music-state) (>= (- t game-start-time) (* 3 4)))
+    (play-music 2))
+  (if (and (>= (- t music-start-time) (* 40 6)) (not= music-state -1))
+    (reset-music-game))
   (cls background-color-game)
 
   (map)
