@@ -16,10 +16,12 @@
 (global music-state -1)
 (global music-start-time 0)
 (global game-start-time 0)
+(global music-main 2)
 
 (global is-initializing-game false)
 
 (global chad-mult 1)
+(global chad-mod-lvl 1.4)
 
 ;; Flies
 (global flies []) ;; {fly-pos-x, fly-pos-y, fly-vector-x, fly-vector-y, fly-respawn-delay}
@@ -223,6 +225,8 @@
   (local vector-x (- dir-end-x dir-start-x))
   (local vector-y (- dir-end-y dir-start-y))
   (set velo (* velocity chad-mult))
+  (if (> chad-mult chad-mod-lvl)
+    (set music-main 0))
   (table.insert flies {:fly-pos-x pos-x :fly-pos-y pos-y :fly-vector-x (* velo vector-x) :fly-vector-y (* velo vector-y)}))
 
 (fn spawn-flies []
@@ -275,11 +279,12 @@
 
 (fn render-game []
   ;;(trace (- t game-start-time))
+  
   (if (= game-start-time 0)
     (start-game-music-logic))
-  (if (and (not= 2 music-state) (>= (- t game-start-time) (* 3 4)))
-    (play-music 2))
-  (if (and (>= (- t music-start-time) (* 40 6)) (not= music-state -1))
+  (if (and (not= music-main music-state) (>= (- t game-start-time) (* 3 4)))
+    (play-music music-main))
+  (if (and (>= (- t music-start-time) (* 38 6)) (not= music-state -1))
     (reset-music-game))
   (cls background-color-game)
 
@@ -338,6 +343,9 @@
   (if (= nutr-index 32)
     (set chad-mult (* 1.01 chad-mult))
     (set chad-mult (* 1.05 chad-mult))))
+
+(fn detect-collision [ax ay aw ah bx by bw bh]
+  (and (and (< ax (+ bx bw)) (> (+ ax aw) bx)) (and (< ay (+ by bh)) (> (+ ay ah) by))))
 
 (fn manage-main-game []
   (render-game)
