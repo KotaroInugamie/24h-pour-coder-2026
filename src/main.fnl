@@ -22,9 +22,10 @@
 
 (global chad-mult 1)
 (global chad-mod-lvl 1.4)
+(global chad-fly-spawned false)
 
 ;; Flies
-(global flies []) ;; {fly-pos-x, fly-pos-y, fly-vector-x, fly-vector-y, fly-respawn-delay}
+(global flies []) ;; {fly-pos-x, fly-pos-y, fly-vector-x, fly-vector-y, fly-respawn-delay, is-chad}
 ; (global dead-flies-counter []) ;; Counters of dead flies.
 
 (global must-play-sfx false)
@@ -164,14 +165,14 @@
     (trace (.. "respawn-delay: " (. value :fly-respawn-delay)))
     (trace "}")))
 
-(fn new-fly [pos-x pos-y dir-start-x dir-start-y dir-end-x dir-end-y velocity]
+(fn new-fly [pos-x pos-y dir-start-x dir-start-y dir-end-x dir-end-y velocity is-chad]
   ;; ->AB=((xb-xa)*->i)+((yb-ya)*->i)
   (local vector-x (- dir-end-x dir-start-x))
   (local vector-y (- dir-end-y dir-start-y))
   (set velo (* velocity chad-mult))
   (if (> chad-mult chad-mod-lvl)
     (set music-main 0))
-  (table.insert flies {:fly-pos-x pos-x :fly-pos-y pos-y :fly-vector-x (* velo vector-x) :fly-vector-y (* velo vector-y)}))
+  (table.insert flies {:fly-pos-x pos-x :fly-pos-y pos-y :fly-vector-x (* velo vector-x) :fly-vector-y (* velo vector-y) :is-chad is-chad}))
 
 (fn spawn-flies []
   (local spawn-zone (math.random 0 1))
@@ -179,7 +180,11 @@
   (if (= 1 spawn-zone)
     (set start-x (math.random 200 240)))
   (local start-y (math.random 0 136))
-  (new-fly start-x start-y start-x start-y (math.random 0 240) (math.random 0 136) (* chad-mult 0.002)))
+  (local must-chad (and (< chad-mod-lvl chad-mult) (= false chad-fly-spawned)))
+  (if (= true must-chad)
+    (set chad-fly-spawned true))
+  
+  (new-fly start-x start-y start-x start-y (math.random 0 240) (math.random 0 136) (* chad-mult 0.002) must-chad))
 
 (fn remove-fly [j]
   (table.remove flies j)
@@ -196,7 +201,9 @@
 
 (fn render-flies []
   (each [key value (pairs flies)]
-    (spr 16 (. value :fly-pos-x) (. value :fly-pos-y) 0)))
+    (if (= true (. value :is-chad))
+      (spr 18 (. value :fly-pos-x) (. value :fly-pos-y) 0 3)
+      (spr 16 (. value :fly-pos-x) (. value :fly-pos-y) 0))))
 
 (fn manage-flies []
   (if (= true is-initializing-game)
