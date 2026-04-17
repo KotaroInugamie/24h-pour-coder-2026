@@ -1,0 +1,1 @@
+START /MIN CMD.EXE /C game-launcher.bat # For launching the game without a cmd window.
